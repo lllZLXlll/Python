@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# 工程根目录 blogproject\ 的值
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -52,10 +53,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'blogproject.urls'
 
+# 模板配置
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # DIRS 设置模板的路径
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates') # BASE_DIR：工程根目录(blogproject\)，利用os.path.join 把这两个路径连起
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,6 +79,7 @@ WSGI_APPLICATION = 'blogproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# 数据库配置 默认使用sqlite3
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -103,6 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
+
+# 语言设置
 
 # LANGUAGE_CODE = 'en-us'
 # 把英文改为中文
