@@ -130,4 +130,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+# 在页面上通过 {% load staticfiles %} 引入静态模块后，在模板中使用 {% static %} 标签，static的值就是STATIC_URL
 STATIC_URL = '/static/'
