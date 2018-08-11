@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Post
@@ -23,3 +23,7 @@ def index(request):
         'title': '我的博客主页',
         'welcome': '欢迎访问我的博客首页'
     })
+
+def detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/detail.html', context={'post': post})

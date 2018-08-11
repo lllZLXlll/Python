@@ -2,6 +2,8 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.six import python_2_unicode_compatible
 
 
 # Create your models here.
@@ -32,6 +34,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+@python_2_unicode_compatible
 class Post(models.Model):
     """
     文章的数据库表稍微复杂一点，主要是涉及的字段更多。
@@ -70,3 +73,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    # 自定义 get_absolute_url 方法
+    # 记得从 django.urls 中导入 reverse 函数
+    def get_absolute_url(self):
+        return reverse('blog:detail', kwargs={'pk': self.pk})
