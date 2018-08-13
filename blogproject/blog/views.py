@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from .models import Post, Category
+from comments.forms import CommentForm
 import markdown
 
 # 首页
@@ -19,7 +20,17 @@ def detail(request, pk):
                                      'markdown.extensions.codehilite',
                                      'markdown.extensions.toc',
                                   ])
-    return render(request, 'blog/detail.html', context={'post': post})
+    # 实例化表单对象
+    form = CommentForm()
+    # 获取此篇文章下的所有评论
+    comment_list = post.comment_set.all().order_by('-created_time')
+    context = {
+        'post': post,
+        'form': form,
+        'comment_list': comment_list,
+    }
+
+    return render(request, 'blog/detail.html', context=context)
 
 # 归档
 def archives(request, year, month):
