@@ -75,6 +75,9 @@ class Post(models.Model):
     # 因为我们规定一篇文章只能有一个作者，而一个作者可能会写多篇文章，因此这是一对多的关联关系，和 Category 类似。
     author = models.ForeignKey(User)
 
+    # 文章阅读量 字段的类型为 PositiveIntegerField，该类型的值只允许为正整数或 0
+    views = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.title
 
@@ -82,3 +85,13 @@ class Post(models.Model):
     # 记得从 django.urls 中导入 reverse 函数
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    # 增加阅读量方法
+    def increase_views(self):
+        self.views += 1
+        # 更新到数据库
+        self.save(update_fields=['views'])
+
+    # 自定义排序规则
+    class Meta:
+        ordering = ['-created_time']
