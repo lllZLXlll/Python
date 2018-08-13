@@ -4,11 +4,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.six import python_2_unicode_compatible
-
-
-# Create your models here.
 from django.db import models
 
+# python_2_unicode_compatible 装饰器用于兼容 Python2
+@python_2_unicode_compatible
 class Category(models.Model):
     """
     Django 要求模型必须继承 models.Model 类。
@@ -27,6 +26,7 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('blog:category', kwargs={'pk': self.pk})
 
+@python_2_unicode_compatible
 class Tag(models.Model):
     """
     标签 Tag 也比较简单，和 Category 一样。
@@ -37,6 +37,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+# python_2_unicode_compatible 装饰器用于兼容 Python2
 @python_2_unicode_compatible
 class Post(models.Model):
     """
