@@ -24,6 +24,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('blog:category', kwargs={'pk': self.pk})
+
 class Tag(models.Model):
     """
     标签 Tag 也比较简单，和 Category 一样。

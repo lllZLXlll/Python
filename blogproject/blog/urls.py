@@ -18,4 +18,10 @@ urlpatterns = [
     # 博客详情，/post/1 根据id为1 查找数据中的文章
     # 以 post/ 开头，后跟一个至少一位数的数字，并且以 / 符号结尾，如 post/1/、 post/255/ 等都是符合规则的，[0-9]+ 表示一位或者多位数
     url(r'^post/(?P<pk>[0-9]+)/$', views.detail, name="detail"),
+
+    # 归档，根据年月筛选文章
+    url(r'^archives/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/$', views.archives, name='archives'),
+
+    # 分类，根据类别筛选文章
+    url(r'^category/(?P<pk>[0-9]+)/$', views.category, name="category"),
 ]
