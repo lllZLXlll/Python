@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Post
+import markdown
 
 def index(request):
     # render 函数，根据传入参数构造HttpResponse
@@ -26,4 +27,11 @@ def index(request):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    # 记得在顶部引入 markdown 模块
+    post.body = markdown.markdown(post.body,
+                                  extensions=[
+                                     'markdown.extensions.extra',
+                                     'markdown.extensions.codehilite',
+                                     'markdown.extensions.toc',
+                                  ])
     return render(request, 'blog/detail.html', context={'post': post})
