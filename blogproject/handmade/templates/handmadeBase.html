@@ -1,12 +1,10 @@
-{# 引入静态模块，才能在模板中使用 {% static %} 标签 #}
 {% load staticfiles %}
-{# 引入自定义模板标签库 #}
 {% load blog_tags %}
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black &amp; White</title>
+    <title>手工饰品</title>
 
     <!-- meta -->
     <meta charset="UTF-8">
@@ -32,7 +30,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-5 col-xs-8">
                 <div class="logo">
-                    <h1><a href="{% url 'blog:index' %}"><b>Black</b> &amp; White</a></h1>
+                    <h1><a href="{% url 'blog:index' %}"><b>手工</b> &amp; 饰品</a></h1>
                 </div>
             </div><!-- col-md-4 -->
             <div class="col-md-8 col-sm-7 col-xs-4">
@@ -64,12 +62,10 @@
                         </form>
                     </div>
                 </div>
-            </div><!-- col-md-8 -->
+            </div>
         </div>
     </header>
 </div>
-<div class="copyrights">Collect from <a href="http://www.cssmoban.com/">网页模板</a></div>
-<div class="copyrights">Modified by <a href="http://zmrenwu.com/">追梦人物的博客</a></div>
 
 <div class="content-body">
     <div class="container">
