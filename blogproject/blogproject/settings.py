@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog', # 注册 博客 应用
     'comments', # 注册 评论 应用
+    'handmade', # 注册 手工饰品 应用
 ]
 
 MIDDLEWARE = [
