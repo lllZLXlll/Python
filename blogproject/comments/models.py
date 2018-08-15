@@ -13,7 +13,7 @@ class Comment(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
 
     # 一对多关系，一片文章多个评论
-    post = models.ForeignKey('blog.Post')
+    post = models.ForeignKey('blog.Post', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.text[:20]

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog', # 注册 博客 应用
     'comments', # 注册 评论 应用
     'handmade', # 注册 手工饰品 应用
+    'haystack', # 注册 搜索库
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,13 @@ USE_TZ = True
 
 # 在页面上通过 {% load staticfiles %} 引入静态模块后，在模板中使用 {% static %} 标签，static的值就是STATIC_URL
 STATIC_URL = '/static/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # 'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

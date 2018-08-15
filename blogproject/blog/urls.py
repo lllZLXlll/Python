@@ -9,6 +9,7 @@ blogproject 作用于整个工程
 
 from django.conf.urls import url
 from . import views
+from blog.feeds import AllPostsRssFeed
 
 app_name = 'blog'
 urlpatterns = [
@@ -27,4 +28,11 @@ urlpatterns = [
 
     # 标签，根据标签筛选文章
     url(r'^tags/(?P<pk>[0-9]+)/$', views.TagView.as_view(), name="tags"),
+
+    # RSS订阅
+    url(r'^all/rss/$', AllPostsRssFeed(), name="rss"),
+
+    # 搜索
+    # url(r'^search/$', views.search, name="search"),
+
 ]

@@ -32,6 +32,10 @@
     outline: none;
 }
 
+span.highlighted {
+    color: red;
+}
+
 h1,
 h2,
 h3,
