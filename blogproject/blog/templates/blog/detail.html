@@ -12,6 +12,13 @@
                 <span class="comments-link"><a href="#">{{ post.comment_set.count }} 评论</a></span>
                 <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
             </div>
+            <div class="widget widget-tag-cloud tag-header">
+                <ul>
+                    {% for tag in post.tags.all %}
+                        <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </header>
         <div class="entry-content clearfix">
             {{ post.body | safe }}

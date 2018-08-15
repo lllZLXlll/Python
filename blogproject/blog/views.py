@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
-from .models import Post, Category
+from .models import Post, Category, Tag
 from comments.forms import CommentForm
 import markdown
 from django.views.generic import ListView, DetailView
@@ -223,10 +223,10 @@ class CategoryView(IndexView):
         cate = get_object_or_404(Category, pk=self.kwargs.get('pk'))
         return super(CategoryView, self).get_queryset().filter(category=cate)
 
-    # # 根据前端传递的id查询出这一分类
-    # cate = get_object_or_404(Category, pk=pk)
-    # # 根据分类查询分类下所有的文章
-    # post_list = Post.objects.filter(category=cate)
-    # return render(request, 'blog/index.html', context={'post_list': post_list})
+# 标签
+class TagView(IndexView):
+    def get_queryset(self):
+        cate = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
+        return super(TagView, self).get_queryset().filter(tags=cate)
 
 

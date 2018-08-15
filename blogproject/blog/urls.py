@@ -24,4 +24,7 @@ urlpatterns = [
 
     # 分类，根据类别筛选文章
     url(r'^category/(?P<pk>[0-9]+)/$', views.CategoryView.as_view(), name="category"),
+
+    # 标签，根据标签筛选文章
+    url(r'^tags/(?P<pk>[0-9]+)/$', views.TagView.as_view(), name="tags"),
 ]
