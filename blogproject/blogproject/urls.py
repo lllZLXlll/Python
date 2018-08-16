@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'', include('blog.urls')),
     url(r'', include('comments.urls')),
     url(r'', include('handmade.urls')),
-    url(r'', include('haystack.urls')),
+    url(r'^search/', include('haystack.urls')),
 ]
