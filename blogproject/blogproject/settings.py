@@ -26,7 +26,11 @@ SECRET_KEY = '_o7$98fd$zn)35dabpfcr7mnhj^q&^(z^zdo@nz7874f((-c5@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 此处配置可以访问的域名地址
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '790ab4d1.ngrok.io',
+]
 
 
 # Application definition
