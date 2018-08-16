@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from DjangoUeditor import urls as djud_urls
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -22,4 +24,9 @@ urlpatterns = [
     url(r'', include('comments.urls')),
     url(r'', include('handmade.urls')),
     url(r'^search/', include('haystack.urls')),
+    url(r'^ueditor/', include(djud_urls)),
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

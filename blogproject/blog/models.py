@@ -6,6 +6,7 @@ from django.utils.six import python_2_unicode_compatible
 from django.db import models
 import markdown
 from django.utils.html import strip_tags
+from DjangoUeditor.models import UEditorField
 
 # python_2_unicode_compatible 装饰器用于兼容 Python2
 @python_2_unicode_compatible
@@ -19,7 +20,7 @@ class Category(models.Model):
     Django 内置的全部类型可查看文档：
     https://docs.djangoproject.com/en/1.10/ref/models/fields/#field-types
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(verbose_name='分类名称', max_length=100)
 
     def __str__(self):
         return self.name
@@ -27,16 +28,24 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('blog:category', kwargs={'pk': self.pk})
 
+    class Meta:
+        verbose_name = "分类"
+        verbose_name_plural = "分类"
+
 @python_2_unicode_compatible
 class Tag(models.Model):
     """
     标签 Tag 也比较简单，和 Category 一样。
     再次强调一定要继承 models.Model 类！
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(verbose_name='标签名称', max_length=100)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "标签"
+        verbose_name_plural = "标签"
 
 # python_2_unicode_compatible 装饰器用于兼容 Python2
 @python_2_unicode_compatible
@@ -46,19 +55,21 @@ class Post(models.Model):
     """
 
     # 文章标题
-    title = models.CharField(max_length=70)
+    title = models.CharField(verbose_name='文章标题', max_length=70)
 
     # 文章正文，我们使用了 TextField。
     # 存储比较短的字符串可以使用 CharField，但对于文章的正文来说可能会是一大段文本，因此使用 TextField 来存储大段文本。
-    body = models.TextField()
+    body = models.TextField(verbose_name='代码内容', blank=True)
+    content = UEditorField(verbose_name='文章内容', height=300, width=1000, default=u'', blank=True, imagePath="uploads/blog/images/",
+                           toolbars='besttome', filePath='uploads/blog/files/')
 
     # 这两个列分别表示文章的创建时间和最后一次修改时间，存储时间的字段用 DateTimeField 类型。
-    created_time = models.DateTimeField()
-    modified_time = models.DateTimeField()
+    created_time = models.DateTimeField(verbose_name='创建时间')
+    modified_time = models.DateTimeField(verbose_name='更新时间')
 
     # 文章摘要，可以没有文章摘要，但默认情况下 CharField 要求我们必须存入数据，否则就会报错。
     # 指定 CharField 的 blank=True 参数值后就可以允许空值了。
-    excerpt = models.CharField(max_length=200, blank=True)
+    excerpt = models.CharField(verbose_name='文章摘要', max_length=200, blank=True)
 
     # 这是分类与标签，分类与标签的模型我们已经定义在上面。
     # 我们在这里把文章对应的数据库表和分类、标签对应的数据库表关联了起来，但是关联形式稍微有点不同。
@@ -67,17 +78,17 @@ class Post(models.Model):
     # 同时我们规定文章可以没有标签，因此为标签 tags 指定了 blank=True。
     # 如果你对 ForeignKey、ManyToManyField 不了解，请看教程中的解释，亦可参考官方文档：
     # https://docs.djangoproject.com/en/1.10/topics/db/models/#relationships
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类')
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name='标签')
 
     # 文章作者，这里 User 是从 django.contrib.auth.models 导入的。
     # django.contrib.auth 是 Django 内置的应用，专门用于处理网站用户的注册、登录等流程，User 是 Django 为我们已经写好的用户模型。
     # 这里我们通过 ForeignKey 把文章和 User 关联了起来。
     # 因为我们规定一篇文章只能有一个作者，而一个作者可能会写多篇文章，因此这是一对多的关联关系，和 Category 类似。
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
 
     # 文章阅读量 字段的类型为 PositiveIntegerField，该类型的值只允许为正整数或 0
-    views = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(verbose_name='文章阅读量', default=0)
 
     def __str__(self):
         return self.title
@@ -96,6 +107,8 @@ class Post(models.Model):
     # 自定义排序规则
     class Meta:
         ordering = ['-created_time']
+        verbose_name = "文章"
+        verbose_name_plural = "文章"
 
     # 重写save方法，在发表文章时如果没有写入文章摘要则获取文章正文的前N个字符作为摘要
     def save(self, *args, **kwargs):
@@ -109,6 +122,9 @@ class Post(models.Model):
             # strip_tags 去掉 HTML 文本的全部 HTML 标签
             # 从文本摘取前 54 个字符赋给 excerpt
             self.excerpt = strip_tags(md.convert(self.body))[:120]
+
+        if self.content:
+            self.body = self.content
 
         # 调用父类的 save 方法将数据保存到数据库中
         super(Post, self).save(*args, **kwargs)

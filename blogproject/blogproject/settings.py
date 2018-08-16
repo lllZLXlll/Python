@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'comments', # 注册 评论 应用
     'handmade', # 注册 手工饰品 应用
     'haystack', # 注册 搜索库
+    'DjangoUeditor', # 注册 编辑器
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,19 @@ USE_TZ = True
 
 # 在页面上通过 {% load staticfiles %} 引入静态模块后，在模板中使用 {% static %} 标签，static的值就是STATIC_URL
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "common_static"),
+    os.path.join(BASE_DIR, "media"),
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+STATICFILES_FINDERS = ("django.contrib.staticfiles.finders.FileSystemFinder",
+                       "django.contrib.staticfiles.finders.AppDirectoriesFinder",)
+
 
 HAYSTACK_CONNECTIONS = {
     'default': {
