@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag, News
 from comments.forms import CommentForm
 import markdown
 from django.views.generic import ListView, DetailView
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
 from django.db.models import Q
+import requests, re
+import datetime
 
 # 首页
 class IndexView(ListView):
@@ -155,7 +157,6 @@ class IndexView(ListView):
 
         return data
 
-
 # 文章详情
 class PostDetailView(DetailView):
     model = Post
@@ -256,3 +257,28 @@ def search(request):
         })
 
 
+def news(request):
+    # 爬取新闻
+    path = 'http://news.baidu.com/?tn=news'
+    content = requests.get(path)
+    content = content.content
+
+    with open('media/uploads/news/new.html', 'wb') as file:
+        file.write(content)
+
+    with open('media/uploads/news/new.html', 'r', encoding='utf-8') as file:
+        content = file.read()
+
+        list = re.findall('id="headline-tabs"[\S\s]*id="pane-recommend"', content)
+        list = re.findall('<a.*htm.*>.*</a>', ''.join(list))
+        for new in list[::-1]: # 从网页上读取的a标签是从头到尾读取，热点新闻是在前面，这里选择倒序循环
+            title = re.findall('<a.*>(.*)</a>$', new)
+            url = re.findall('href="(.*[htm|html|shtml])"', new)
+            news = News(title=title[0], url=url[0], created_time=datetime.datetime.now())
+            news.save()
+
+    news_list = News.objects.all()
+
+    return render(request, 'blog/index.html', {
+       'news_list': news_list
+    })

@@ -32,7 +32,7 @@ urlpatterns = [
     # RSS订阅
     url(r'^all/rss/$', AllPostsRssFeed(), name="rss"),
 
-    # 搜索
-    # url(r'^search/$', views.search, name="search"),
+    # 新闻
+    url(r'^news/$', views.news, name="news"),
 
 ]

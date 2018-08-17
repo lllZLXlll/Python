@@ -128,3 +128,14 @@ class Post(models.Model):
 
         # 调用父类的 save 方法将数据保存到数据库中
         super(Post, self).save(*args, **kwargs)
+
+@python_2_unicode_compatible
+class News(models.Model): # 新闻模型
+    title = models.CharField(verbose_name='新闻标题', max_length=70)
+    url = models.CharField(verbose_name='新闻链接', max_length=300)
+    created_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_time']
+        verbose_name = "新闻"
+        verbose_name_plural = "新闻"

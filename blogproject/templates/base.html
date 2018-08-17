@@ -80,6 +80,19 @@
                 {% block toc %}
                 {% endblock toc %}
                 <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">新闻</h3>
+                    {% get_news as new_list %}
+                    <ul>
+                        {% for new in new_list %}
+                            <li>
+                                <a href="{{ new.url }}" target="_blank">{{ new.title }}</a>
+                            </li>
+                        {% empty %}
+                            暂无新闻
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="widget widget-recent-posts">
                     <h3 class="widget-title">最新文章</h3>
                     {% get_recent_post as recent_post_list %}
                     <ul>

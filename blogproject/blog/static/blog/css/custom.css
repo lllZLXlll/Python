@@ -363,6 +363,9 @@ img {
     position: relative;
     line-height: 170%;
     margin-bottom: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .widget-recent-posts ul li::before {

@@ -1,4 +1,4 @@
-from ..models import Post, Category, Tag
+from ..models import Post, Category, Tag, News
 from django import template
 from django.db.models.aggregates import Count
 
@@ -23,3 +23,8 @@ def get_categories():
 @register.simple_tag
 def get_tags():
     return Tag.objects.annotate(num_posts=Count('post')).filter(num_posts__gt=0)
+
+#
+@register.simple_tag
+def get_news(num=10):
+    return News.objects.all().order_by('-created_time')[:num]
