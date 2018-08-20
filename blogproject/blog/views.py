@@ -256,8 +256,12 @@ def search(request):
         'post_list': post_list
         })
 
+# -------------------------定时任务---------------------------
+# 每天定时爬取百度新闻中的热点新闻
 
-def news(request):
+from apscheduler.schedulers.background import BackgroundScheduler
+
+def news():
     # 爬取新闻
     path = 'http://news.baidu.com/?tn=news'
     content = requests.get(path)
@@ -277,8 +281,22 @@ def news(request):
             news = News(title=title[0], url=url[0], created_time=datetime.datetime.now())
             news.save()
 
-    news_list = News.objects.all()
+# 在后台运行调度，不影响当前的系统计算运行
+sched = BackgroundScheduler()
 
-    return render(request, 'blog/index.html', {
-       'news_list': news_list
-    })
+"""
+间隔３秒的执行
+# @sched.scheduled_job('interval', seconds=3)
+
+模仿cron来执行的，在周一到周五其间，每天的０点到９点直接，在３０分到５９分之间执行，执行频次为３秒
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour='0-9', minute='30-59', second='*/3')  
+"""
+
+# 每天10点0分执行1次
+@sched.scheduled_job('cron', day_of_week='*', hour='10', minute='0', second='1')
+def task_news():
+    news()
+
+sched.start()
+
+# -------------------------定时任务---------------------------
