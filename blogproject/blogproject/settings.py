@@ -29,7 +29,7 @@ DEBUG = True
 # 此处配置可以访问的域名地址
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '2a70e83f.ngrok.io',
+    '7f13556d.ngrok.io',
 ]
 
 
