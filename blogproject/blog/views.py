@@ -278,7 +278,12 @@ def news():
         for new in list[::-1]: # 从网页上读取的a标签是从头到尾读取，热点新闻是在前面，这里选择倒序循环
             title = re.findall('<a.*>(.*)</a>$', new)
             url = re.findall('href="(.*[htm|html|shtml])"', new)
-            news = News(title=title[0], url=url[0], created_time=datetime.datetime.now())
+            url = url[0]
+            try:
+                url = url[0:url.index('?')]
+            except Exception as e:
+                print(e)
+            news = News(title=title[0], url=url, created_time=datetime.datetime.now())
             news.save()
 
 # 在后台运行调度，不影响当前的系统计算运行
@@ -293,7 +298,7 @@ sched = BackgroundScheduler()
 """
 
 # 每天10点0分执行1次
-@sched.scheduled_job('cron', day_of_week='*', hour='10', minute='0', second='1')
+@sched.scheduled_job('cron', day_of_week='*', hour='13', minute='47', second='1')
 def task_news():
     news()
 
