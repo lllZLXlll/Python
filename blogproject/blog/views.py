@@ -298,7 +298,7 @@ sched = BackgroundScheduler()
 """
 
 # 每天10点0分执行1次
-@sched.scheduled_job('cron', day_of_week='*', hour='13', minute='47', second='1')
+@sched.scheduled_job('cron', day_of_week='*', hour='10', minute='0', second='1')
 def task_news():
     news()
 
